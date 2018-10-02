@@ -5,18 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class playerScript_ex00 : MonoBehaviour {
 
-	public Rigidbody2D rigidBody;
 
+	public Rigidbody2D rigidBody;
 	public Transform groundCheck;
+
 	private bool grounded = false;
 	private bool jump;
 	private float moveForce = 1000.0f;
 	float jumpForce = 3000f;
 	private float maxSpeed = 5f;
-
 	static GameObject currentObject;
 
 	// Use this for initialization
+
 	void Awake () {
 		jump = false;
 		currentObject = GameObject.FindWithTag("blue");

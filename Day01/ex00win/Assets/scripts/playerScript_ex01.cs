@@ -5,19 +5,28 @@ using UnityEngine.SceneManagement;
 
 public class playerScript_ex01 : MonoBehaviour {
 
-	public Rigidbody2D rigidBody;
 
+
+	public Rigidbody2D rigidBody;
 	public Transform groundCheck;
 	public bool grounded;
-	private bool jump;
 	public float moveForce = 1000.0f;
 	public float jumpForce = 3000f;
 	public float maxSpeed = 5f;
+
+	private	GameObject redEndGate;
+	private	GameObject yellowEndGate;
+	private	GameObject blueEndGate;
+	private bool jump;
 	private BoxCollider2D m_Collider;
 	static GameObject currentObject;
 
+
 	// Use this for initialization
 	void Awake () {
+		redEndGate = GameObject.FindWithTag("redEndGate");
+		blueEndGate = GameObject.FindWithTag("blueEndGate");
+		yellowEndGate = GameObject.FindWithTag("yellowEndGate");
 		grounded = false;
 		currentObject = GameObject.FindWithTag("blue");
 		jumpForce = 10000.0f; 
@@ -68,6 +77,10 @@ public class playerScript_ex01 : MonoBehaviour {
             }
         }
     }
+
+
+
+
 
 	void FixedUpdate(){
 		rigidBody = currentObject.GetComponent<Rigidbody2D>();
