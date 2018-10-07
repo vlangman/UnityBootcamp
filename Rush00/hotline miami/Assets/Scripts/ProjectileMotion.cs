@@ -1,23 +1,43 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileMotion : MonoBehaviour {
 
-	public Quaternion direction;
+	//speed set from outside
 	public float mSpeed;
+	public Vector2 direction;
+	public Vector3 gunTransform;
+	public Quaternion gunRotation;
 
 	// Use this for initialization
 	void Start () {
-		transform.rotation = direction;
+		Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		direction = (Vector2)((worldMousePos - gunTransform));
+ 		direction.Normalize();
+ 		transform.rotation = gunRotation;
+ 		Vector3 faceForward = transform.eulerAngles;
+ 		faceForward.z -=90f;
+ 		transform.eulerAngles = faceForward;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update (){
 		
 	}
 
 	void FixedUpdate(){
-		transform.Translate( transform.forward * mSpeed * Time.deltaTime , Space.World);
+		transform.Translate(direction * mSpeed * Time.deltaTime, Space.World);
 	}
+
+	void OnCollisionEnter2D(Collision2D collider){
+		Debug.Log(collider.gameObject.layer);
+		//layers for walls and doors respectively
+		Debug.Log(collider.gameObject.tag);
+		if (collider.gameObject.layer == 10 || collider.gameObject.layer == 11){
+			Destroy(gameObject);
+		}
+	}
+
 }
