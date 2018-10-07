@@ -37,6 +37,13 @@ public class PlayerMovement : MonoBehaviour {
 		if (animator)
 			animator.SetBool("isMoving", isMoving);
 
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+		if (enemies.Length == 0){
+			Debug.Log("You Win!");
+		}
+ 
+
 	}
 
 
