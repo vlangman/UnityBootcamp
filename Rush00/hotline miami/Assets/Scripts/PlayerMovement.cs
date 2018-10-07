@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour {
 	public bool isMoving;
 	[HideInInspector]
 	public GameObject legs;
-
+	public GameObject gunThrow;
 	public GameObject playerGun;
 	public GameObject currentWeapon;
 	public Vector2 offset;
@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour {
 			isMoving = true;
 		}
 		animator.SetBool("isMoving", isMoving);
+
 	}
 
 
@@ -81,13 +82,23 @@ public class PlayerMovement : MonoBehaviour {
 		if (currentWeapon != null)
 		{
 			Destroy(currentWeapon.gameObject);
+			ThrowGun(currentWeapon.GetComponent<gunController>().throwGunObject);
+			
 		}
 
 	//instantiate the weapon
+
+	//apply gun specifications
 		currentWeapon = Instantiate(newWeapon, playerGun.gameObject.transform.position, playerGun.gameObject.transform.rotation,  gameObject.transform);
 		currentWeapon.GetComponent<gunController>().mOwner = gameObject;
-	//apply gun specifications
-
-
 	}
+
+	public void ThrowGun(GameObject gun){
+		Debug.Log("Throwing gun: " + gun.tag);
+		Destroy(currentWeapon.gameObject);
+		GameObject thrownWeapon = Instantiate(gun, playerGun.gameObject.transform.position, playerGun.gameObject.transform.rotation);
+		Vector3 mouseOnScreen = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		thrownWeapon.GetComponent<WeaponPickup>().ThrowWeapon(mouseOnScreen);
+	}
+
 }

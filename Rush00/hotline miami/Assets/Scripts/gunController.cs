@@ -7,6 +7,7 @@ public class gunController : MonoBehaviour {
 	public float projectileSpeed;
 	public float rateOfFire;
 	public Sprite playerGunSprite;
+	public GameObject throwGunObject;
 	public GameObject defaultProjectile;
 	public GameObject mOwner;
 	public int AmmoCount;
@@ -25,7 +26,10 @@ public class gunController : MonoBehaviour {
 		}else{
 			fire = false;
 		}
-		
+		if (Input.GetMouseButton(1)){
+			fire = false;
+			ThrowGun();
+		}
 	}
 
 	void FixedUpdate(){
@@ -50,6 +54,10 @@ public class gunController : MonoBehaviour {
 		}
 	}
 
+	private void ThrowGun(){
+		mOwner.GetComponent<PlayerMovement>().ThrowGun(throwGunObject);
+	}
+
 	private void setGunStats(){
 		if (gameObject.tag == "Revolver"){
 			projectileSpeed = 10f;
@@ -57,13 +65,19 @@ public class gunController : MonoBehaviour {
 			AmmoCount = 10;
 			projectileLife = 8f;
 			defaultProjectile = (GameObject)Resources.Load("RevolverProjectile");
+			 throwGunObject = (GameObject)Resources.Load("Revolver");
+
 		}
 		if (gameObject.tag == "Uzi"){
 			projectileSpeed = 10f;
 			rateOfFire = 8f;
 			AmmoCount = 25;
 			projectileLife = 8f;
+
 			defaultProjectile = (GameObject)Resources.Load("UziProjectile");
+			 throwGunObject = (GameObject)Resources.Load("Uzi");
+
+
 		}
 		if (gameObject.tag == "Katana"){
 			projectileSpeed = 0f;
@@ -72,6 +86,10 @@ public class gunController : MonoBehaviour {
 			projectileLife = 0.3f;
 
 			defaultProjectile = (GameObject)Resources.Load("KatanaProjectile");
+			 throwGunObject = (GameObject)Resources.Load("Katana");
+
+
+
 		}
 		if (gameObject.tag == "Raygun"){
 			projectileSpeed = 15f;
@@ -79,10 +97,9 @@ public class gunController : MonoBehaviour {
 			AmmoCount = 9999999;
 			projectileLife = 8f;
 			defaultProjectile = (GameObject)Resources.Load("RaygunProjectile");
+			 throwGunObject = (GameObject)Resources.Load("Raygun");
+
 		}
 	}
 
-	public void Fire(){
-
-	}
 }
