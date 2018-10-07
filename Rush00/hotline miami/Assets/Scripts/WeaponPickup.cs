@@ -7,7 +7,10 @@ public class WeaponPickup : MonoBehaviour {
 	public bool isThrown;
 	public Vector3 target;
 	public GameObject playersGunPrefab;
-
+	public bool isSpinning;
+	float timer;
+	float SpinTime = 5f;
+	float speed = 100;
 
 	void Start(){
 		isThrown = false;
@@ -24,6 +27,23 @@ public class WeaponPickup : MonoBehaviour {
 			if ( transform.position == target){
 				isThrown = false;
 			}
+		}
+		if (isSpinning){
+			spinGun();
+		}
+	}
+
+	void spinGun(){
+		
+		float speed = 1f;
+		if(timer <= SpinTime )
+		{
+			Quaternion rot = transform.rotation;
+			rot.z +=  speed;
+			transform.rotation = rot;
+			timer += Time.deltaTime;
+		}else{
+			isSpinning = false;
 		}
 	}
 }

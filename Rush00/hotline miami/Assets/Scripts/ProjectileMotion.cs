@@ -19,6 +19,10 @@ public class ProjectileMotion : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		if (GunOwner.layer == 15){
+			GameObject Player = GameObject.FindGameObjectWithTag("Player");
+			worldMousePos = Player.transform.position;
+		}
 		direction = (Vector2)((worldMousePos - gunTransform));
  		direction.Normalize();
  		transform.rotation = gunRotation;

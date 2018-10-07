@@ -21,15 +21,24 @@ public class gunController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButton(0)){
-			fire = true;
+		if (mOwner.gameObject.layer != 15){
+			if (Input.GetMouseButton(0) && AmmoCount != 0){
+				fire = true;
+				if (mOwner.GetComponent<PlayerMovement>())
+					mOwner.GetComponent<PlayerMovement>().isShooting = true;
+			}else{
+				fire = false;
+				if (mOwner.GetComponent<PlayerMovement>())
+					mOwner.GetComponent<PlayerMovement>().isShooting = false;
+			}
+			if (Input.GetMouseButton(1)){
+				fire = false;
+				ThrowGun();
+			}
 		}else{
 			fire = false;
 		}
-		if (Input.GetMouseButton(1)){
-			fire = false;
-			ThrowGun();
-		}
+
 	}
 
 	void FixedUpdate(){
@@ -37,11 +46,8 @@ public class gunController : MonoBehaviour {
 		if (fire == true && Timer >= (1.0f/rateOfFire) && AmmoCount != 0){
 			AmmoCount--;
 			Vector3 offset = transform.position;
-			Debug.Log("SpawnPos: " + offset);
 			offset += Vector3.forward * 2.5f;
-			Debug.Log("offset: " + offset);
-
-			GameObject bullet = Instantiate(defaultProjectile, offset, transform.rotation);
+			GameObject bullet = Instantiate(defaultProjectile, offset, mOwner.gameObject.transform.rotation);
 			//assign its direction immediately after create
 			bullet.GetComponent<ProjectileMotion>().mSpeed = projectileSpeed;
 			bullet.GetComponent<ProjectileMotion>().gunTransform = transform.position;
@@ -76,8 +82,6 @@ public class gunController : MonoBehaviour {
 
 			defaultProjectile = (GameObject)Resources.Load("UziProjectile");
 			 throwGunObject = (GameObject)Resources.Load("Uzi");
-
-
 		}
 		if (gameObject.tag == "Katana"){
 			projectileSpeed = 0f;
@@ -94,12 +98,24 @@ public class gunController : MonoBehaviour {
 		if (gameObject.tag == "Raygun"){
 			projectileSpeed = 15f;
 			rateOfFire = 10f;
-			AmmoCount = 9999999;
+			AmmoCount = 25;
 			projectileLife = 8f;
 			defaultProjectile = (GameObject)Resources.Load("RaygunProjectile");
 			 throwGunObject = (GameObject)Resources.Load("Raygun");
 
 		}
+		if (gameObject.tag == "EnemyGun"){
+			projectileSpeed = 15f;
+			rateOfFire = 10f;
+			AmmoCount = 99999999;
+			projectileLife = 8f;
+			defaultProjectile = (GameObject)Resources.Load("UziProjectile");
+			throwGunObject = (GameObject)Resources.Load("Uzi");
+		}
+	}
+
+	public void setFire(bool fireMode){
+		fire = fireMode;
 	}
 
 }

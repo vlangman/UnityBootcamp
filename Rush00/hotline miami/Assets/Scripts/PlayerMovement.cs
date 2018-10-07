@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour {
 	public GameObject playerGun;
 	public GameObject currentWeapon;
 	public Vector2 offset;
+	public bool isShooting;
 	// Use this for initialization
 	void Start () {
 		moveSpeed = 5.5f;
@@ -33,7 +34,8 @@ public class PlayerMovement : MonoBehaviour {
 		}else{
 			isMoving = true;
 		}
-		animator.SetBool("isMoving", isMoving);
+		if (animator)
+			animator.SetBool("isMoving", isMoving);
 
 	}
 
@@ -83,7 +85,7 @@ public class PlayerMovement : MonoBehaviour {
 		{
 			Destroy(currentWeapon.gameObject);
 			ThrowGun(currentWeapon.GetComponent<gunController>().throwGunObject);
-			
+
 		}
 
 	//instantiate the weapon
@@ -99,6 +101,7 @@ public class PlayerMovement : MonoBehaviour {
 		GameObject thrownWeapon = Instantiate(gun, playerGun.gameObject.transform.position, playerGun.gameObject.transform.rotation);
 		Vector3 mouseOnScreen = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		thrownWeapon.GetComponent<WeaponPickup>().ThrowWeapon(mouseOnScreen);
+		thrownWeapon.GetComponent<WeaponPickup>().isSpinning = true;
 	}
 
 }
