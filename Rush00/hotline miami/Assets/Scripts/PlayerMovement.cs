@@ -85,6 +85,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	//instantiate the weapon
 		currentWeapon = Instantiate(newWeapon, playerGun.gameObject.transform.position, playerGun.gameObject.transform.rotation,  gameObject.transform);
+		currentWeapon.GetComponent<gunController>().mOwner = gameObject;
 	//apply gun specifications
 
 

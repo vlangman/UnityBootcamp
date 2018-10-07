@@ -8,9 +8,11 @@ public class gunController : MonoBehaviour {
 	public float rateOfFire;
 	public Sprite playerGunSprite;
 	public GameObject defaultProjectile;
+	public GameObject mOwner;
 	public int AmmoCount;
 	private float Timer;
 	private bool fire;
+	private float projectileLife;
 	// Use this for initialization
 	void Start () {
 		setGunStats();
@@ -40,6 +42,9 @@ public class gunController : MonoBehaviour {
 			bullet.GetComponent<ProjectileMotion>().mSpeed = projectileSpeed;
 			bullet.GetComponent<ProjectileMotion>().gunTransform = transform.position;
 			bullet.GetComponent<ProjectileMotion>().gunRotation = transform.rotation;
+			bullet.GetComponent<ProjectileMotion>().GunOwner = mOwner;
+			bullet.GetComponent<ProjectileMotion>().DeathTime = projectileLife;
+
 
 			Timer = 0.0f;
 		}
@@ -47,27 +52,32 @@ public class gunController : MonoBehaviour {
 
 	private void setGunStats(){
 		if (gameObject.tag == "Revolver"){
-			projectileSpeed = 5f;
+			projectileSpeed = 10f;
 			rateOfFire = 3f;
 			AmmoCount = 10;
+			projectileLife = 8f;
 			defaultProjectile = (GameObject)Resources.Load("RevolverProjectile");
 		}
 		if (gameObject.tag == "Uzi"){
 			projectileSpeed = 10f;
 			rateOfFire = 8f;
 			AmmoCount = 25;
+			projectileLife = 8f;
 			defaultProjectile = (GameObject)Resources.Load("UziProjectile");
 		}
 		if (gameObject.tag == "Katana"){
 			projectileSpeed = 0f;
-			rateOfFire = 10f;
+			rateOfFire = 2.5f;
 			AmmoCount = 9999999;
+			projectileLife = 0.3f;
+
 			defaultProjectile = (GameObject)Resources.Load("KatanaProjectile");
 		}
 		if (gameObject.tag == "Raygun"){
-			projectileSpeed = 0f;
+			projectileSpeed = 15f;
 			rateOfFire = 10f;
 			AmmoCount = 9999999;
+			projectileLife = 8f;
 			defaultProjectile = (GameObject)Resources.Load("RaygunProjectile");
 		}
 	}

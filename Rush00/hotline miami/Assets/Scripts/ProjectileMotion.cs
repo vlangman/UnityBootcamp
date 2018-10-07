@@ -10,6 +10,11 @@ public class ProjectileMotion : MonoBehaviour {
 	public Vector2 direction;
 	public Vector3 gunTransform;
 	public Quaternion gunRotation;
+	public GameObject GunOwner;
+	public float DeathTime;
+
+	private float timer;
+
 
 	// Use this for initialization
 	void Start () {
@@ -29,15 +34,25 @@ public class ProjectileMotion : MonoBehaviour {
 
 	void FixedUpdate(){
 		transform.Translate(direction * mSpeed * Time.deltaTime, Space.World);
+		timer+=Time.deltaTime;
+		if (timer >= DeathTime){
+			Destroy(gameObject);
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D collider){
+
 		Debug.Log(collider.gameObject.layer);
 		//layers for walls and doors respectively
 		Debug.Log(collider.gameObject.tag);
 		if (collider.gameObject.layer == 10 || collider.gameObject.layer == 11){
 			Destroy(gameObject);
 		}
+		//player layer
+		if (collider.gameObject.layer == 8 && GunOwner.gameObject.layer != 8){
+			Destroy(collider.gameObject);
+		}
+
 	}
 
 }
