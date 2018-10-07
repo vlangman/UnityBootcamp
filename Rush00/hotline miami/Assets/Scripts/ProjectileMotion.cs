@@ -45,15 +45,22 @@ public class ProjectileMotion : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D collider){
-
-		Debug.Log(collider.gameObject.layer);
 		//layers for walls and doors respectively
-		Debug.Log(collider.gameObject.tag);
+	
 		if (collider.gameObject.layer == 10 || collider.gameObject.layer == 11){
 			Destroy(gameObject);
 		}
 		//player layer
-		if (collider.gameObject.layer == 8 && GunOwner.gameObject.layer != 8){
+
+			Debug.Log("OwnerLayer : " +  GunOwner.gameObject.layer);
+			Debug.Log("Victim Layer : " + collider.gameObject.layer);
+
+		//enemy shoots player
+		if (collider.gameObject.layer == 8 && GunOwner.gameObject.layer == 15){
+			Destroy(collider.gameObject);
+		}
+		//if player shoots enemy
+		if (collider.gameObject.layer == 15 && GunOwner.gameObject.layer == 8){
 			Destroy(collider.gameObject);
 		}
 

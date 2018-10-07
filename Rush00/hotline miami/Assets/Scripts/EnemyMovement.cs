@@ -17,7 +17,6 @@ public class EnemyMovement : MonoBehaviour {
 	private GameObject Player;
 	private PlayerMovement playerScript;
 	private int layerMask;
-	private int wallLayerMask;
 	private float rayMax;
 	private Vector3 playerLastSeen;
 	private GameObject currentWeapon;
@@ -31,8 +30,8 @@ public class EnemyMovement : MonoBehaviour {
 
 		Player = GameObject.FindGameObjectWithTag("Player");
 		mSpeed = 3.5f;
-		detectionDistance = 1.6f;
-		audioDetectionDistance = 10f;
+		detectionDistance = 2f;
+		audioDetectionDistance = 7f;
 
 		// isChasing = false;
 		chaseMax = 3.0f;
@@ -40,8 +39,10 @@ public class EnemyMovement : MonoBehaviour {
 		chaseTimer = chaseMax;
 		playerScript = Player.GetComponent<PlayerMovement>();
 		//layermaks for player
-		layerMask = 1 << 8;
-		wallLayerMask = 1 << 10;
+		int playerMask = 1 << 8;
+		int wallLayerMask = 1 << 10;
+		layerMask = playerMask | wallLayerMask;
+		
 	}
 	
 	// Update is called once per frame
@@ -66,7 +67,11 @@ public class EnemyMovement : MonoBehaviour {
 	void FixedUpdate(){
 		chaseTimer+=Time.deltaTime;
 		if (playerScript.isShooting){
-			chaseTimer = 0;
+			if (isWithinAudioDetectionRange()){
+				chaseTimer = 0;
+				playerLastSeen = Player.gameObject.transform.position;
+				MoveToLastSeen();
+			}
 		}
 		if (isWithinDetectionRange() || chaseTimer < chaseMax){
 			if (isWithinDetectionRange()){
@@ -81,22 +86,15 @@ public class EnemyMovement : MonoBehaviour {
 		Debug.DrawLine(transform.position, Player.gameObject.transform.position);
 
 
-		
-		// RaycastHit2D wallhit = Physics2D.Raycast(transform.position, transform.TransformDirection(-Vector2.up), rayMax, wallLayerMask);
-
-		// if (wallhit.collider = null){
-		// 	Debug.Log(wallhit);
-		// }
 
 		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.TransformDirection(-Vector2.up), rayMax, layerMask);
 		if (hit.collider != null) {
-			// float distance = Mathf.Abs(hit.point.y - transform.position.y);
-			Debug.Log(hit.collider.tag);
-			playerLastSeen = hit.transform.position;
-			chaseTimer = 0;
-			// Debug.Log(distance);
+
 			if (hit.collider.tag == "Player")
 			{
+				Debug.Log(hit.collider.tag);
+				playerLastSeen = hit.transform.position;
+				chaseTimer = 0;
 				currentWeapon.GetComponent<gunController>().setFire(true);
 			}
 			else{

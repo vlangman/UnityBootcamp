@@ -109,7 +109,7 @@ public class gunController : MonoBehaviour {
 			rateOfFire = 10f;
 			AmmoCount = 99999999;
 			projectileLife = 8f;
-			defaultProjectile = (GameObject)Resources.Load("UziProjectile");
+			defaultProjectile = (GameObject)Resources.Load("enemyProjectile");
 			throwGunObject = (GameObject)Resources.Load("Uzi");
 		}
 	}
